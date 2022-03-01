@@ -1,0 +1,190 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{bigints}
+\usepackage{natbib}
+%\usepackage{tikz}
+
+
+\textwidth 17 cm
+\oddsidemargin -0.5 cm
+\evensidemargin -0.5 cm
+\textheight 21 cm
+%\addtolength\topmargin{-20pt}
+%\addtolength\textheight{25pt}
+%
+%%\parindent 0pt
+%\parskip 0.5cm
+
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\sech}{sech}
+
+\title{Notes on the 1D Nonlinear Schr{\"o}dinger Equation, its soliton solution, and its long-wave Optical Wave Turbulence modification}
+\author{Jonathan Skipp}
+\date{}	
+	
+\begin{document}
+
+
+    \maketitle
+\begin{abstract}
+These notes contain several results relating to the 1D NLSE, its bright soliton solution, and its modification for Optical Wave Turbulence in the long-wave regime.
+ \end{abstract}
+
+\section{Derivation the bright soliton solution}
+
+This first section contains a reproduction of the derivation for the single-bright-soliton solution of the 1D Nonlinear Schr{\"o}dinger Equation (NLSE), based on the method outlined in the lecture notes Sergey Nazarenko for the University of Warwick course MA4L0, Spring 2016, pp.46-50. 
+	This derivation is carried out for the normalisation of the NLSE with all coefficients equal to unity. I also state how how to convert the equation, and its soliton solution, to  other normalisations. In addition, I state the Fourier transform and waveaction spectrum of the soliton.
+
+Consider the one-dimensional (1D), cubic, focusing, NLSE, written in units in which \textbf{all coefficients are unity}:
+\begin{equation}
+	\label{eq:NLS}
+	i\frac{\partial\psi}{\partial t} + \frac{\partial^2 \psi}{\partial \mathrm{x}^2} + |\psi|^2 \psi =0.
+\end{equation}
+We seek a bright soliton solution, i.e.\ a localised pulse of the form 
+\begin{equation}
+	\label{eq:soli_ansatz}
+	\psi = e^{i(\beta \mathrm{x}-\gamma t)} f(\xi),
+\end{equation}
+where the constants $\beta$ and $\gamma$ are real, and $f(\xi)$ is a real function of the travelling coordinate $\xi = \mathrm{x} - ct$. For a localised pulse we have $f(\xi)\to0$ as $\xi\to\pm\infty$. 
+
+We substitute~\eqref{eq:soli_ansatz} into~\eqref{eq:NLS} and set $\beta=c/2$ in order to eliminate the term $v'$. Defining $\mu = (c/2)^2 -\gamma$ we obtain an ODE for the soliton profile
+\begin{equation}
+	\label{eq:profile_ODE}
+	f'' - \mu f + f^3 = 0.
+\end{equation}
+or
+\begin{equation*}
+	f'' = -\frac{\mathrm{d}}{\mathrm{d} f}U(f),
+\end{equation*}
+which is Newton's second law for a particle with dynamical variable (``position'') $f(\xi)$ depending on ``time'' $\xi$, moving in a quartic potential $U(f)=f^4/4-\mu f^2/2$. For such a particle the energy is conserved:
+\begin{equation*}
+	E = \frac{f'^2}{2} + U(f) = \mathrm{const}.
+\end{equation*}
+Considering the dynamics of such a particle in a potential well of shape $U(f)$, most trajectories are periodic. Translating back to the solution $\psi(\mathrm{x},t)$, this would represent a periodic nonlinear wave rather than a localised pulse. Such a pulse is given only by the homoclinic orbits of the system~\eqref{eq:profile_ODE} that start and end at $f=0$, $f'=0$, corresponding to $E=0$. We choose the right orbit with positive $f$. 
+
+The choice of trajectory with $E=0$ can also be seen directly by going back to~\eqref{eq:profile_ODE}, multiplying by $f'$, and noting that each term on the LHS can be written as a derivative with respect to $\xi$. Noting that $f$ decays at infinity, we integrate immediately to obtain
+\begin{equation}
+	\label{eq:E=0}
+	\frac{f'^2}{2} + \frac{f^4}{4}-\mu \frac{f^2}{2} = E = 0.
+\end{equation}
+
+Equation~\eqref{eq:E=0} is separable; we have
+\begin{equation*}
+	\int\! \frac{\mathrm{d}f}{\sqrt{\mu f^2 - f^4/2}} = \int\! \mathrm{d}\xi = \xi.
+\end{equation*}
+Changing variables to $z=\sqrt{2\mu}/f$, the LHS beomes
+\begin{equation*}
+	\frac{1}{\sqrt{\mu}} \int\! \frac{\mathrm{d} z}{\sqrt{z^2-1}} = \frac{1}{\sqrt{\mu}} \arccosh(z).
+\end{equation*}
+In terms of $f$, the soliton profile is
+\begin{equation*}
+	f = \frac{\sqrt{2\mu}}{\cosh(\sqrt{\mu}\xi)}
+\end{equation*}
+which we substitute, together with $\gamma = (c/2)^2 - \mu$, into~\eqref{eq:soli_ansatz} to find the form of the bright soliton
+\begin{equation}
+	\label{eq:soliton}
+	\psi(\mathrm{x},t) 
+		=  \sqrt{2\mu} \, \sech\!\big[\sqrt{\mu}(\mathrm{x}-ct)\big]  \, 
+			e^{i\left(\frac{c}{2}\mathrm{x}+\left[\mu- \left(\frac{c}{2}\right)^2\right]t \right) }.
+\end{equation}
+Finally, we note that the NLSE is invariant to spatial translation and to $U(1)$ phase shifts, allowing us to insert constants $\mathrm{x}_0$ and $\phi_0$ to obtain the more general solution
+\begin{equation}
+	\label{eq:soliton_plus_consts}
+	\psi(\mathrm{x},t) = \sqrt{2\mu} \, \sech\!\big[\sqrt{\mu}(\mathrm{x}-\mathrm{x}_0-ct)\big]  \, e^{i\left( \frac{c}{2}(\mathrm{x}-\mathrm{x}_0) + \left[\mu-\left(\frac{c}{2}\right)^2\right] t \right) } \, e^{i\phi_0}.
+\end{equation}
+
+
+
+\subsection{Conversion to the ``$(1/2)\partial_{xx}$'' notation}
+\label{subsec:Gelash_notation}
+ 
+Another common notation for the NLSE has a factor of one-half in front of the kinetic term, namely
+\begin{equation}
+	\label{eq:NLS_GELASH}
+		i\frac{\partial \psi}{\partial t} + \frac{1}{2}\frac{\partial^2 \psi}{\partial x^2} + |\psi|^2 \psi =0.
+\end{equation}
+Note in equation~\eqref{eq:NLS_GELASH} I have written $x$ in an upright font to distinguish it from the spatial coordinate $\mathrm{x}$ in~\eqref{eq:NLS}. 
+
+The bright soliton solution for~\eqref{eq:NLS_GELASH} is
+\begin{equation}
+	\label{eq:soliton_plus_consts_GELASH}
+	\psi(x ,t) = a \frac{e^{iv(x -x _0-vt) + \frac{1}{2}i(a^2+v^2)t + i\theta}}{\cosh\left[ a(x -x _0-vt) \right]},
+\end{equation}
+for example, see Gelash and  Agafontsev, Phys.\ Rev.\ E 98, 042210 (2018). 
+
+To convert between the notation of~\eqref{eq:NLS},~\eqref{eq:soliton_plus_consts} and that of~\eqref{eq:NLS_GELASH},~\eqref{eq:soliton_plus_consts_GELASH}, we simply set
+\begin{equation*}
+	\mathrm{x} = \sqrt{2} \, x, 	\qquad 
+	\mu= \frac{a^2}{2}, 		\qquad
+	c=\sqrt{2} \, v,			\qquad
+	\phi_0 = \theta.
+\end{equation*}
+
+
+
+\subsection{Conversion to the NLS with arbitrary coefficients}
+
+More generally we can rescale space and the field amplitude in the NLSE~\eqref{eq:NLS} and its 1-soliton solution~\eqref{eq:soliton_plus_consts} via
+\begin{equation*}
+	\mathrm{x}     = \frac{1}{\sqrt{C_l}} x , \qquad
+	\psi = \sqrt{C_n} \Psi, \qquad
+	c     = \frac{v}{\sqrt{C_l}},
+\end{equation*}
+to obtain the equation
+\begin{equation*}
+	i\frac{\partial\Psi}{\partial t} + C_l \frac{\partial^2 \Psi}{\partial x ^2} + C_n |\Psi|^2 \Psi =0,
+\end{equation*}
+which has the soliton solution
+\begin{equation*}
+	\Psi(x ,t) = 
+				A  \,
+	 			\sech\!\left[  \kappa (x -x _0-vt)  \right]  \, 
+	 			\exp\!\left(i \left\{  \frac{v}{2C_l} (x -x _0)  \,+ \, \left[ \frac{A^2C_n}{2}  -  \frac{1}{C_l} \left( \frac{v}{2}\right)^2 \right]t \right\} \right)\, 
+	 			\exp(i\phi_0).
+\end{equation*}
+%\begin{equation*}
+%	\Psi(x ,t) = 
+%				\sqrt{\frac{2\mu}{C_n}}  \,
+%	 			\sech\!\left[  \sqrt{\frac{\mu}{C_l}} (x -x _0-vt)  \right]  \, 
+%	 			\exp\!\left(i \left\{  \frac{v}{2C_l} (x -x _0)  \,+ \, \left[ \mu  -  \frac{1}{C_l} \left( \frac{v}{2}\right)^2 \right]t \right\} \right)\, 
+%	 			\exp(i\phi_0).
+%\end{equation*}
+where the soliton amplitude $A$, the the inverse $\kappa$ of its characteristic width are
+\begin{equation*}
+	A = \sqrt{\frac{2\mu}{C_n}}, \qquad \mathrm{and} \qquad
+	\kappa = A\sqrt{\frac{C_n}{2C_l}},
+\end{equation*}
+respectively.
+
+
+\section{Waveaction spectrum of the 1-soliton solution (``$(1/2)\partial_{xx}$'' notation)}
+
+Reverting to the normalisation of section~\ref{subsec:Gelash_notation} , we consider the soliton~\eqref{eq:soliton_plus_consts_GELASH} centred at $x_0=0$ at $t=0$, and with phase $\theta=0$:
+\begin{equation}
+	\label{eq:soliton_simple}
+	\psi(x,t) = a \frac{e^{ivx}}{\cosh(ax)} = a \frac{2e^{ivx}}{e^{ax}+e^{-ax}}.
+\end{equation}
+Taking the Fourier transform of~\eqref{eq:soliton_simple}, we seek
+\begin{equation*}
+	\hat{\psi}(k,t) =   \int_{-\infty}^\infty \!\mathrm{d}x \,   a \frac{2e^{ivx}}{e^{ax}+e^{-ax}} e^{-ikx}
+						=  \int_{-\infty}^\infty \!\mathrm{d}\xi\,    \frac{2e^{-i\kappa\xi}}{e^\xi+e^{-\xi}}
+						= \pi \sech\left( \frac{\pi\kappa}{2} \right),
+\end{equation*}
+where in the second step we have used $\xi = ax$ and $\kappa = (k-v)/a$, and the final step follows from contour integration.
+Thus, in terms of the original variables, we obtain
+\begin{equation}
+	\label{eq:soliton_FT}
+	\hat{\psi}_k = \pi \sech\left( \frac{\pi(k-v)}{2a} \right).
+\end{equation}
+
+From~\eqref{eq:soliton_FT}, the waveaction spectrum follows:
+\begin{equation}
+	\label{eq:soliton_nk}
+	n_k(t) \propto |\hat{\psi}_k|^2 = \pi^2 \sech^2\left( \frac{\pi(k-v)}{2a} \right).
+\end{equation}
+
+\end{document}
