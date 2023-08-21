@@ -3,9 +3,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{mathtools}
 \usepackage{graphicx}
 \usepackage{bigints}
 \usepackage{natbib}
+\usepackage{xcolor}
 %\usepackage{tikz}
 
 
@@ -21,6 +23,7 @@
 
 \DeclareMathOperator{\arccosh}{arccosh}
 \DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\Res}{Res}
 
 \title{Notes on the 1D Nonlinear Schr{\"o}dinger Equation, its soliton solution, and its long-wave Optical Wave Turbulence modification}
 \author{Jonathan Skipp}
@@ -85,12 +88,11 @@ In terms of $f$, the soliton profile is
 	f = \frac{\sqrt{2\mu}}{\cosh(\sqrt{\mu}\xi)}
 \end{equation*}
 which we substitute, together with $\gamma = (c/2)^2 - \mu$, into~\eqref{eq:soli_ansatz} to find the form of the bright soliton
-\begin{equation}
-	\label{eq:soliton}
+\begin{equation*}
 	\psi(\mathrm{x},t) 
 		=  \sqrt{2\mu} \, \sech\!\big[\sqrt{\mu}(\mathrm{x}-ct)\big]  \, 
 			e^{i\left(\frac{c}{2}\mathrm{x}+\left[\mu- \left(\frac{c}{2}\right)^2\right]t \right) }.
-\end{equation}
+\end{equation*}
 Finally, we note that the NLSE is invariant to spatial translation and to $U(1)$ phase shifts, allowing us to insert constants $\mathrm{x}_0$ and $\phi_0$ to obtain the more general solution
 \begin{equation}
 	\label{eq:soliton_plus_consts}
@@ -114,7 +116,7 @@ The bright soliton solution for~\eqref{eq:NLS_GELASH} is
 	\label{eq:soliton_plus_consts_GELASH}
 	\psi(x ,t) = a \frac{e^{iv(x -x _0-vt) + \frac{1}{2}i(a^2+v^2)t + i\theta}}{\cosh\left[ a(x -x _0-vt) \right]},
 \end{equation}
-for example, see Gelash and  Agafontsev, Phys.\ Rev.\ E 98, 042210 (2018). 
+for example, see Gelash and  Agafontsev, Phys.\ Rev.\ E 98, 042210 (2018). (Note carefully the signs of the $v^2t$ factors in the exponentials.) 
 
 To convert between the notation of~\eqref{eq:NLS},~\eqref{eq:soliton_plus_consts} and that of~\eqref{eq:NLS_GELASH},~\eqref{eq:soliton_plus_consts_GELASH}, we simply set
 \begin{equation*}
@@ -161,30 +163,114 @@ where the soliton amplitude $A$, the the inverse $\kappa$ of its characteristic 
 respectively.
 
 
-\section{Waveaction spectrum of the 1-soliton solution (``$(1/2)\partial_{xx}$'' notation)}
+\section{Waveaction and spatio-temporal spectra of the 1-soliton solution (``$(1/2)\partial_{xx}$'' notation)}
 
-Reverting to the normalisation of section~\ref{subsec:Gelash_notation} , we consider the soliton~\eqref{eq:soliton_plus_consts_GELASH} centred at $x_0=0$ at $t=0$, and with phase $\theta=0$:
+Reverting to the normalisation of section~\ref{subsec:Gelash_notation}, we consider the 1-soliton solution~\eqref{eq:soliton_plus_consts_GELASH}, setting $x_0$ and $\theta$ set to $0$ for convenience (nonzero values result in an overall phase shift in the Fourier transforms, which make no difference to the spectra):
 \begin{equation}
-	\label{eq:soliton_simple}
-	\psi(x,t) = a \frac{e^{ivx}}{\cosh(ax)} = a \frac{2e^{ivx}}{e^{ax}+e^{-ax}}.
+	\label{eq:soliton}
+	\psi(x ,t) = a \frac{e^{iv(x-vt) + i(\frac{a^2+v^2}{2})t}}{\cosh\left[ a(x-vt) \right]}.
 \end{equation}
-Taking the Fourier transform of~\eqref{eq:soliton_simple}, we seek
-\begin{equation*}
-	\hat{\psi}(k,t) =   \int_{-\infty}^\infty \!\mathrm{d}x \,   a \frac{2e^{ivx}}{e^{ax}+e^{-ax}} e^{-ikx}
-						=  \int_{-\infty}^\infty \!\mathrm{d}\xi\,    \frac{2e^{-i\kappa\xi}}{e^\xi+e^{-\xi}}
-						= \pi \sech\left( \frac{\pi\kappa}{2} \right),
-\end{equation*}
-where in the second step we have used $\xi = ax$ and $\kappa = (k-v)/a$, and the final step follows from contour integration.
-Thus, in terms of the original variables, we obtain
-\begin{equation}
-	\label{eq:soliton_FT}
-	\hat{\psi}_k = \pi \sech\left( \frac{\pi(k-v)}{2a} \right).
-\end{equation}
+In this section we find the spatial Fourier transform and  spatio-temporal Fourier transform of~\eqref{eq:soliton}, and from them obtain the respective waveaction and spatio-temporal spectra. 
 
-From~\eqref{eq:soliton_FT}, the waveaction spectrum follows:
+To do so we need the result
 \begin{equation}
-	\label{eq:soliton_nk}
+	\label{eq:FTsech}
+	J(\kappa ; x)   
+	\coloneqq   \int_{-\infty}^\infty    \frac{2e^{i\kappa x}}{e^x+e^{-x}}  \,\mathrm{d}x
+	= \pi\sech\left( \frac{\pi \kappa }{2}\right),
+\end{equation}
+the proof of which is a pleasantly diverting exercise in contour integration, which we give in Appendix~\ref{app:FTsech}.
+
+\subsection{Spatial FT and waveaction spectrum}
+The spatial Fourier transform of~\eqref{eq:soliton} is
+\begin{align*}
+	\hat{\psi}(k,t) &=  \int_{-\infty}^\infty \!  a\frac{e^{iv(x-vt) + i(\frac{a^2+v^2}{2})t}}{\cosh\left[ a(x-vt) \right]} e^{-ikx}  \,\mathrm{d}x   \\
+						&=  \int_{-\infty}^\infty \!  \frac{ 2 e^{iv(x-vt)} e^{-ik(x-vt)} }{e^{a(x-vt)}+e^{-a(x-vt)}}   \,\mathrm{d}x  
+								\cdot ae^{i(\frac{a^2+v^2}{2})t}e^{-ikvt}									\\
+						&= \int_{-\infty}^\infty \!  \frac{ 2 e^{i(v-k)\xi} }{e^{a\xi}+e^{-a\xi}}   \,\mathrm{d}\xi  
+								\cdot ae^{i(\frac{a^2+v^2}{2}-kv)t}
+\end{align*}
+where in the last step we have made a Galilean transform into the frame moving at the soliton speed, with coordinates  $\xi=x-vt$ and $t'=t$ and immediately dropped the prime on the time coordinate (in particular for the Galilean transform $\mathrm{d}x = \mathrm{d}\xi$). Using~\eqref{eq:FTsech} with $(v-k)/a \to \kappa$ and $a\xi\to x$ we then obtain the spatial Fourier transform of the 1-soliton solution
+\begin{equation}
+	\label{eq:psihat_soli}
+	\hat{\psi}(k,t) 	= \pi \sech\left( \frac{\pi(k-v)}{2a} \right) e^{i(\frac{a^2+v^2}{2}-kv)t}		
+\end{equation}.
+The waveaction spectrum follows:
+\begin{equation}
+	\label{eq:nk_soli}
 	n_k(t) \propto |\hat{\psi}_k|^2 = \pi^2 \sech^2\left( \frac{\pi(k-v)}{2a} \right).
 \end{equation}
+{\color{red} WHAT ABOUT THE NORMALISATION ?? }.
+
+\subsection{Spatio-temporal transform and spectrum}
+
+The temporal Fourier transform of~\eqref{eq:psihat_soli} is trivial, but note that the sign in the exponent of the transform kernel $e^{i\omega t}$ is positive, as the full spatio-temporal decomposition into plane waves goes (schematically) as $\psi(x,t) \sim \tilde{\psi}(k,\omega) \exp[i (kx - \omega t)]$. The spatio-temporal Fourier coefficient is thus
+\begin{align*}
+	\tilde{\psi}(k,\omega)  
+			&=  \int_{-\infty}^{\infty} \! \hat{\psi}(k,t) e^{i\omega t} \, \mathrm{d}t 				\\
+			&=  \int_{-\infty}^{\infty} \!  e^{i(\frac{a^2+v^2}{2}-kv)t}	e^{i\omega t} \, \mathrm{d}t \cdot \pi \sech\left( \frac{\pi(k-v)}{2a} \right).
+\end{align*}
+Using the identity $\int_\mathbb{R} \exp[i(\omega+\omega_0)t] \mathrm{d}t = 2\pi\delta(\omega+\omega_0)$ we obtain the spatio-temporal Fourier transform
+\begin{equation}
+	\label{eq:psitilde_soli}
+	\tilde{\psi}(k,\omega)  = 2\pi^2 \delta\left(\omega+\frac{a^2+v^2}{2} -kv\right) \sech\left( \frac{\pi(k-v)}{2a} \right)
+\end{equation}
+and the spatio-temporal spectrum varies as
+\begin{equation}
+	\label{eq:nkomega_soli}
+	n_{k\omega} \propto |\tilde{\psi}|^2 = 4\pi^4 \left[ \delta\left(\omega+\frac{a^2+v^2}{2} -kv\right) \right]^2  \sech^2\left( \frac{\pi(k-v)}{2a} \right).
+\end{equation}
+
+In~\eqref{eq:nkomega_soli} the argument of the delta function implies that the spatio-temporal spectrum of the soliton will be zero except on the line
+\begin{equation}
+	\label{eq:nkomega_soli_line}
+	\omega = vk - \frac{a^2+v^2}{2},
+\end{equation}
+i.e. in the $k$--$\omega$ plane the soliton spectrum will have a gradient of $v$. The dependence of the sech profile with $(k-v)$ implies that in the $k$--$\omega$ plane, the soliton spectrum will be centred horizontally on $k_c=v$. Thus from~\eqref{eq:nkomega_soli_line} the soliton spectrum will be centred vertically on $\omega_c= (v^2-a^2)/2$.
+
+\appendix
+
+\section{Proof of eq~\eqref{eq:FTsech}}
+\label{app:FTsech}
+
+Consider the contour integral
+\begin{equation*}
+	\underbrace{\oint_C    		\frac{2e^{i\kappa z}}{e^z+e^{-z}}  \,\mathrm{d}z}_{I_C} =
+	\underbrace{\int_{-R}^R     \frac{2e^{i\kappa x}}{e^x+e^{-x}}  \,\mathrm{d}x}_{I_R} +
+	\underbrace{\int_\Gamma  \frac{2e^{i\kappa z}}{e^z+e^{-z}}  \,\mathrm{d}z}_{I_\Gamma}
+\end{equation*}
+where $C$ is the contour formed by the length along the real axis $-R \leq x \leq R$ and a semicircular closure $\Gamma$ of radius $R$. If $\kappa>0$ (respectively if $\kappa<0$) we take $\Gamma$ to lie in the upper (lower) half-plane, so that in the limit $R\to\infty$ we have $I_\Gamma\to0$; also
+$I_R\to J(\kappa;x)$, and therefore
+\begin{equation*}
+	J(\kappa ; x) = \lim_{R\to\infty} I_C.
+\end{equation*}
+
+The integrand in $I_C$ has simple poles at $z_n = i\pi(n+1/2)$ with $n\in\{0,1,2,\ldots\}$. Defining $\delta z = z-z_n$, the $n$-th residue is
+\begin{align*}
+\Res_n  &= \lim_{\delta z\to 0} \delta z \, \frac{2e^{i\kappa (z_n+\delta z)}}{e^{z_n + \delta z}+e^{-z_n -\delta z}}						\\
+			&=  \lim_{\delta z\to 0} \delta z \, 
+					\frac{  2e^{-\pi\kappa (n+1/2)}  }{  \underbrace{e^{i\pi n}}_{(-1)^n} \underbrace{e^{i\pi/2}}_i e^{\delta z}
+							+\underbrace{e^{-i\pi n}}_{(-1)^n}\underbrace{e^{-i\pi/2}}_{-i} e^{-\delta z}  } 									\\
+			&= \lim_{\delta z\to 0} \delta z \, \frac{  2(-i)(-1)^n e^{-\pi\kappa (n+1/2)}  }{  e^{\delta z} - e^{-\delta z}  }						\\
+			&= \lim_{\delta z\to 0} \delta z \, 
+					\frac{  2(-i)(-1)^n  e^{-\pi\kappa (n+1/2)}  }{  [1+\delta z + \mathcal{O}(\delta z^2)] - [1-\delta z+\mathcal{O}(\delta z^2)]  }.  \\
+			&= \lim_{\delta z\to 0} \delta z \, 
+					\frac{  2(-i)(-1)^n  e^{-\pi\kappa (n+1/2)}  }  {  2 \, \delta z + \mathcal{O}(\delta z^2)  }.  											\\
+			&=   (-i)(-1)^n e^{-\pi\kappa (n+1/2)}  .
+\end{align*}
+Thus by the residue theorem the $n$-th contribution to $I_C$ due to $\Res_n$ is
+\begin{equation*}
+	(2\pi i) \Res_n = (2\pi i) \left[  (-i)(-1)^n e^{-\pi\kappa (n+1/2)}  \right] =  2\pi e^{-\pi\kappa /2} \left(-e^{-\pi\kappa } \right)^n.
+\end{equation*}
+Taking the $R\to\infty$ limit we sum an infinite number of these contributions, which is easy to evaluate as the sum is geometric:
+\begin{align*}
+\lim_{R\to\infty}I_C &= \sum_{n=0}^\infty  2\pi e^{-\pi\kappa/2} \left(-e^{-\pi i\kappa } \right)^n 		\\
+	 						 &= 2\pi e^{-\pi\kappa/2} \frac{1}{1+e^{-\pi\kappa}}										\\
+						  	 &= \frac{2\pi}{ e^{\pi \kappa/2} + e^{-\pi \kappa/2}}.
+\end{align*} 
+Equating this to $J(\kappa ; x)$ we finally we obtain~\eqref{eq:FTsech}:
+\begin{equation*}
+J(\kappa ; x) = \pi \sech\left( \frac{\pi \kappa}{2} \right).
+\end{equation*}
 
 \end{document}

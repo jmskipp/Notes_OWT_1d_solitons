@@ -1,5 +1,10 @@
 *.aux
 *.log
 *.synctex.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*Notes.bib
 
 .DS_store
